@@ -1,0 +1,34 @@
+// -- Base Colors
+
+$red: #bb423e;
+$dark-red: #392028;
+
+$green: #45946c;
+$dark-green: #1b3434;
+
+$purple: #5248d1;
+
+$white: #ffffff;
+$light-gray: #c9ccd0;
+$gray: #565c68;
+$dark-gray: #222936;
+$black: #141722;
+
+
+// -- Semantic
+
+// Common
+$primary-text-color: $light-gray;
+$secondary-text-color: $gray;
+$background-color: $black;
+$border-color: $dark-gray;
+
+// Ask / Bid
+$ask-text-color: $red;
+$ask-bg-color: $dark-red;
+$bid-text-color: $green;
+$bid-bg-color: $dark-green;
+
+// Button
+$bt-text-color: $white;
+$bt-bg-color: $purple;

@@ -1,5 +1,5 @@
 import 'reset-css';
-import './app.scss';
+import './style/app.scss';
 
 function App() {
   return (
