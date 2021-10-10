@@ -1,0 +1,4 @@
+$breakpoint: 660;
+
+$screen-desktop-min: #{$breakpoint}px;
+$screen-mobile-max: #{$breakpoint - 1}px;
