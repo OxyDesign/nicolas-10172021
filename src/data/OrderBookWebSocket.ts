@@ -5,8 +5,6 @@ import {
   updateOrders
 } from '../utils/functions';
 
-const wsUrl: string = 'wss://www.cryptofacilities.com/ws/v1';
-
 interface WebsocketInterface {
   constructor: Function;
   close: Function;
@@ -16,15 +14,19 @@ interface WebsocketInterface {
 }
 
 class OrderBookWebSocket implements WebsocketInterface {
+  readonly url: string = 'wss://www.cryptofacilities.com/ws/v1';
   private socket: W3CWebSocket;
   private onData: Function = () => {};
   private asks: Orders;
   private bids: Orders;
+  private product: string;
+  private interval: number = 0;
 
   public constructor({ onConnect }: { onConnect: Function }) {
+    this.product = '';
     this.asks = [];
     this.bids = [];
-    this.socket = new W3CWebSocket(wsUrl);
+    this.socket = new W3CWebSocket(this.url);
 
     this.socket.onopen = function() {
       onConnect();
@@ -49,8 +51,6 @@ class OrderBookWebSocket implements WebsocketInterface {
       if (feed === 'book_ui_1_snapshot') {
         this.asks = sortedAsks;
         this.bids = sortedBids;
-
-        this.sendData();
       } else if (feed === 'book_ui_1') {
         if (sortedAsks.length) {
           this.asks = updateOrders(this.asks, sortedAsks);
@@ -58,8 +58,6 @@ class OrderBookWebSocket implements WebsocketInterface {
         if (sortedBids.length) {
           this.bids = updateOrders(this.bids, sortedBids);
         }
-
-        this.sendData();
       };
     };
   };
@@ -68,16 +66,26 @@ class OrderBookWebSocket implements WebsocketInterface {
     this.socket.close();
   };
 
-  public subscribe = ({ product, onData }: { product: string, onData: Function }) => {
+  public subscribe = ({ product, frequency, onData }: { product: string, frequency: number, onData: Function }) => {
+    this.product = product;
     this.onData = onData;
 
     if (this.isConnected()) {
-      this.socket.send(getSubscriptionMessage(true, product));
+      this.socket.send(getSubscriptionMessage(true, this.product));
+      this.interval = window.setInterval(() => {
+        this.sendData();
+      }, frequency);
     }
   };
 
   public unsubscribe = ({ product }: { product: string }) => {
+    this.asks = [];
+    this.bids = [];
+    this.product = '';
     this.onData = () => {};
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
 
     if (this.isConnected()) {
       this.socket.send(getSubscriptionMessage(false, product));
