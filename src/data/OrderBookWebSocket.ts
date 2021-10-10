@@ -2,7 +2,6 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import {
   getSubscriptionMessage,
   sortOrdersByAsc,
-  computeOrdersTotal,
   updateOrders
 } from '../utils/functions';
 
@@ -13,6 +12,7 @@ interface WebsocketInterface {
   close: Function;
   subscribe: Function;
   unsubscribe: Function;
+  isConnected: Function;
 }
 
 class OrderBookWebSocket implements WebsocketInterface {
@@ -20,13 +20,6 @@ class OrderBookWebSocket implements WebsocketInterface {
   private onData: Function = () => {};
   private asks: Orders;
   private bids: Orders;
-
-  private sendData = () => {
-    if (this.onData) this.onData({
-      asks: computeOrdersTotal(this.asks.slice(0).reverse()).reverse(),
-      bids: computeOrdersTotal(this.bids),
-    });
-  };
 
   public constructor({ onConnect }: { onConnect: Function }) {
     this.asks = [];
@@ -78,7 +71,7 @@ class OrderBookWebSocket implements WebsocketInterface {
   public subscribe = ({ product, onData }: { product: string, onData: Function }) => {
     this.onData = onData;
 
-    if (this.socket.readyState === 1) {
+    if (this.isConnected()) {
       this.socket.send(getSubscriptionMessage(true, product));
     }
   };
@@ -86,9 +79,20 @@ class OrderBookWebSocket implements WebsocketInterface {
   public unsubscribe = ({ product }: { product: string }) => {
     this.onData = () => {};
 
-    if (this.socket.readyState === 1) {
+    if (this.isConnected()) {
       this.socket.send(getSubscriptionMessage(false, product));
     }
+  };
+
+  private sendData = () => {
+    if (this.onData) this.onData({
+      asks: this.asks.slice(),
+      bids: this.bids.slice()
+    });
+  };
+
+  public isConnected = (): boolean => {
+    return this.socket.readyState === 1;
   };
 };
 

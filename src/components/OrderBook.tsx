@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import OrderBookWebSocket from '../data/OrderBookWebSocket';
+import {
+  computeOrdersTotal
+} from '../utils/functions';
 
 function OrderBook() {
   const [ws, setWs]: [any, Function] = useState(null);
@@ -27,8 +30,11 @@ function OrderBook() {
 
     ws.subscribe({
       product,
-      onData: (newData: {asks: [], bids: []}): void => {
-        setData(newData);
+      onData: ({ asks, bids }: {asks: [], bids: []}): void => {
+        setData({
+          asks: computeOrdersTotal(asks.reverse()).reverse(),
+          bids: computeOrdersTotal(bids)
+        });
       }
     })
 
