@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import WebsocketConnection from '../data/WebsocketConnection';
+import OrderBookWebSocket from '../data/OrderBookWebSocket';
 
 function OrderBook() {
   const [ws, setWs]: [any, Function] = useState(null);
@@ -9,7 +9,7 @@ function OrderBook() {
   const bidMax = data.bids.length ? data.bids[data.bids.length - 1][2] : null;
 
   useEffect(() => {
-    const newWebsocket = new WebsocketConnection({
+    const newWebsocket = new OrderBookWebSocket({
       onConnect: (): void => {
         setProduct('XBT');
       }

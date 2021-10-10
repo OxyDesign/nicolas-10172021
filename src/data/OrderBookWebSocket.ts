@@ -15,7 +15,7 @@ interface WebsocketInterface {
   unsubscribe: Function;
 }
 
-class WebsocketConnection implements WebsocketInterface {
+class OrderBookWebSocket implements WebsocketInterface {
   private socket: W3CWebSocket;
   private onData: Function = () => {};
   private asks: Orders;
@@ -92,4 +92,4 @@ class WebsocketConnection implements WebsocketInterface {
   };
 };
 
-export default WebsocketConnection;
+export default OrderBookWebSocket;
