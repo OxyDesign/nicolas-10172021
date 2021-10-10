@@ -51,6 +51,8 @@ class OrderBookWebSocket implements WebsocketInterface {
       if (feed === 'book_ui_1_snapshot') {
         this.asks = sortedAsks;
         this.bids = sortedBids;
+
+        this.sendData();
       } else if (feed === 'book_ui_1') {
         if (sortedAsks.length) {
           this.asks = updateOrders(this.asks, sortedAsks);
