@@ -82,3 +82,22 @@ export const updateOrders: Function = (orders: Orders, deltas: Orders): Orders =
 
   return newOrders;
 };
+
+/**
+ * Format Number For Display
+ * @param {number} value - Number to format
+ * @param {number} decimal - Decimals to include
+ * @return {string} Formatted Number
+ */
+export const formatNumberForDisplay: Function = (value: number, decimal: number = 0): String => {
+  let [integerPart, decimalPart] = value.toFixed(decimal).split('.');
+  let i = 0;
+
+  integerPart = integerPart.split('').reduceRight((number, digit) => {
+    const newNumber = digit + (i && i % 3 === 0 ? ',' : '') + number;
+    i++;
+    return newNumber;
+  }, '');
+
+  return decimal ? [integerPart, decimalPart].join('.') : integerPart;
+}

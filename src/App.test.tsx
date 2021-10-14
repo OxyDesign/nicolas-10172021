@@ -1,6 +1,7 @@
 // import { render, screen } from '@testing-library/react';
 import {
   computeOrdersTotal,
+  formatNumberForDisplay,
   getSubscriptionMessage,
   sortOrdersByAsc,
   updateOrders
@@ -183,6 +184,81 @@ const updateOrdersTests = [
   }
 ];
 
+const formatNumberForDisplayTests = [
+  // No decimal set
+  { values: { number: 0 }, answer: '0' },
+  { values: { number: 0.5 }, answer: '1' },
+  { values: { number: 1 }, answer: '1' },
+  { values: { number: 1.21 }, answer: '1' },
+  { values: { number: 9 }, answer: '9' },
+  { values: { number: 9.78 }, answer: '10' },
+  { values: { number: 10 }, answer: '10' },
+  { values: { number: 99 }, answer: '99' },
+  { values: { number: 123 }, answer: '123' },
+  { values: { number: 1234 }, answer: '1,234' },
+  { values: { number: 12345 }, answer: '12,345' },
+  { values: { number: 123456 }, answer: '123,456' },
+  { values: { number: 1234567 }, answer: '1,234,567' },
+  { values: { number: 12345678 }, answer: '12,345,678' },
+  { values: { number: 123456789 }, answer: '123,456,789' },
+  { values: { number: 1234567890 }, answer: '1,234,567,890' },
+  { values: { number: 1234567890.987654321 }, answer: '1,234,567,891' },
+  // Decimal set to 0
+  { values: { number: 0, decimal: 0 }, answer: '0' },
+  { values: { number: 0.5, decimal: 0 }, answer: '1' },
+  { values: { number: 1, decimal: 0 }, answer: '1' },
+  { values: { number: 1.21, decimal: 0 }, answer: '1' },
+  { values: { number: 9, decimal: 0 }, answer: '9' },
+  { values: { number: 9.78, decimal: 0 }, answer: '10' },
+  { values: { number: 10, decimal: 0 }, answer: '10' },
+  { values: { number: 99, decimal: 0 }, answer: '99' },
+  { values: { number: 123, decimal: 0 }, answer: '123' },
+  { values: { number: 1234, decimal: 0 }, answer: '1,234' },
+  { values: { number: 12345, decimal: 0 }, answer: '12,345' },
+  { values: { number: 123456, decimal: 0 }, answer: '123,456' },
+  { values: { number: 1234567, decimal: 0 }, answer: '1,234,567' },
+  { values: { number: 12345678, decimal: 0 }, answer: '12,345,678' },
+  { values: { number: 123456789, decimal: 0 }, answer: '123,456,789' },
+  { values: { number: 1234567890, decimal: 0 }, answer: '1,234,567,890' },
+  { values: { number: 1234567890.987654321, decimal: 0 }, answer: '1,234,567,891' },
+  // Decimal set to 1
+  { values: { number: 0, decimal: 1 }, answer: '0.0' },
+  { values: { number: 0.5, decimal: 1 }, answer: '0.5' },
+  { values: { number: 1, decimal: 1 }, answer: '1.0' },
+  { values: { number: 1.21, decimal: 1 }, answer: '1.2' },
+  { values: { number: 9, decimal: 1 }, answer: '9.0' },
+  { values: { number: 9.78, decimal: 1 }, answer: '9.8' },
+  { values: { number: 10, decimal: 1 }, answer: '10.0' },
+  { values: { number: 99, decimal: 1 }, answer: '99.0' },
+  { values: { number: 123, decimal: 1 }, answer: '123.0' },
+  { values: { number: 1234, decimal: 1 }, answer: '1,234.0' },
+  { values: { number: 12345, decimal: 1 }, answer: '12,345.0' },
+  { values: { number: 123456, decimal: 1 }, answer: '123,456.0' },
+  { values: { number: 1234567, decimal: 1 }, answer: '1,234,567.0' },
+  { values: { number: 12345678, decimal: 1 }, answer: '12,345,678.0' },
+  { values: { number: 123456789, decimal: 1 }, answer: '123,456,789.0' },
+  { values: { number: 1234567890, decimal: 1 }, answer: '1,234,567,890.0' },
+  { values: { number: 1234567890.987654321, decimal: 1 }, answer: '1,234,567,891.0' },
+  // Decimal set to 2
+  { values: { number: 0, decimal: 2 }, answer: '0.00' },
+  { values: { number: 0.5, decimal: 2 }, answer: '0.50' },
+  { values: { number: 1, decimal: 2 }, answer: '1.00' },
+  { values: { number: 1.21, decimal: 2 }, answer: '1.21' },
+  { values: { number: 9, decimal: 2 }, answer: '9.00' },
+  { values: { number: 9.78, decimal: 2 }, answer: '9.78' },
+  { values: { number: 10, decimal: 2 }, answer: '10.00' },
+  { values: { number: 99, decimal: 2 }, answer: '99.00' },
+  { values: { number: 123, decimal: 2 }, answer: '123.00' },
+  { values: { number: 1234, decimal: 2 }, answer: '1,234.00' },
+  { values: { number: 12345, decimal: 2 }, answer: '12,345.00' },
+  { values: { number: 123456, decimal: 2 }, answer: '123,456.00' },
+  { values: { number: 1234567, decimal: 2 }, answer: '1,234,567.00' },
+  { values: { number: 12345678, decimal: 2 }, answer: '12,345,678.00' },
+  { values: { number: 123456789, decimal: 2 }, answer: '123,456,789.00' },
+  { values: { number: 1234567890, decimal: 2 }, answer: '1,234,567,890.00' },
+  { values: { number: 1234567890.987654321, decimal: 2 }, answer: '1,234,567,890.99' }
+];
+
 test('getSubscriptionMessage', () => {
   getSubscriptionMessageTests.forEach(test => {
     const { values, answer } = test;
@@ -210,5 +286,13 @@ test('updateOrders', () => {
     const { values, answer } = test;
     const { orders, deltas } = values;
     expect(updateOrders(orders, deltas)).toStrictEqual(answer);
+  });
+});
+
+test('formatNumberForDisplay', () => {
+  formatNumberForDisplayTests.forEach(test => {
+    const { values, answer } = test;
+    const { number, decimal } = values;
+    expect(formatNumberForDisplay(number, decimal)).toBe(answer);
   });
 });
