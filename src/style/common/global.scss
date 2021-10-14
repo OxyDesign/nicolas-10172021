@@ -7,4 +7,17 @@
 body {
   background-color: $background-color;
   font-family: 'Mulish';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  height: 100%;
 }

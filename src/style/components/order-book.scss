@@ -6,6 +6,7 @@
   flex-direction: column;
   background-color: $background-color;
   color: $primary-text-color;
+  height: 100%;
 
   .number {
     font-family: 'Roboto Mono';
@@ -106,15 +107,30 @@
 
     .ob-tables-container {
       flex-direction: column;
+      flex-grow: 1;
+      overflow: hidden;
     }
 
     .orders-table {
+      $theadHeight: 28px;
+      $spreadHeight: 36px;
+      $totalHeight: $theadHeight + $spreadHeight;
+      $halfHeight: $totalHeight / 2;
+
       width: 100%;
+      overflow: hidden;
+
+      tbody {
+        overflow: auto;
+      }
 
       &.ask {
+        height: calc(50% - #{ $halfHeight } + #{ $theadHeight });
+
         tbody {
           flex-direction: column-reverse;
         }
+
         tbody tr {
           background-image: linear-gradient(to left, $ask-bg-color, $ask-bg-color);
           background-position: 0 0;
@@ -122,6 +138,8 @@
       }
 
       &.bid {
+        height: calc(50% - #{ $halfHeight });
+
         thead {
           display: none;
         }
@@ -140,6 +158,8 @@
   .ob {
     .ob-tables-container {
       flex-direction: row;
+      flex-grow: 1;
+      overflow: auto;
 
       .ob-spread {
         display: none;
