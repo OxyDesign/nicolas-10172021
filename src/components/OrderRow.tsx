@@ -1,3 +1,5 @@
+import { formatNumberForDisplay } from '../utils/functions';
+
 type OrderRowProps = {
   order: TotalOrder;
   max: number;
@@ -10,9 +12,9 @@ function OrderRow({ order, max }: OrderRowProps) {
   return <tr style={ {
     backgroundSize: `${ totalPercentage }%`
   } }>
-    <td className="price">{ price.toFixed(2) }</td>
-    <td>{ size }</td>
-    <td>{ total }</td>
+    <td className="price">{ formatNumberForDisplay(price, 2) }</td>
+    <td>{ formatNumberForDisplay(size) }</td>
+    <td>{ formatNumberForDisplay(total) }</td>
   </tr>;
 }
 
