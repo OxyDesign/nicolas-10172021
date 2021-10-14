@@ -30,6 +30,10 @@
     tbody tr {
       background-color: transparent;
       background-repeat: no-repeat;
+
+      td {
+        font-family: 'Roboto Mono';
+      }
     }
 
     td, th {
