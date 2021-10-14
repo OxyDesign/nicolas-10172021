@@ -1,0 +1,15 @@
+@import '../vars/colors';
+
+.primary-button {
+  background-color: $bt-bg-color;
+  color: $bt-text-color;
+  border: 0;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.05s ease-in;
+
+  &:hover {
+    background-color: darken($bt-bg-color, 10%);
+  }
+}

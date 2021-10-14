@@ -6,6 +6,7 @@ import {
 } from '../utils/functions';
 
 import OrdersTable from './OrdersTable';
+import Button from './Button';
 
 import OrderBookWebSocket from '../data/OrderBookWebSocket';
 
@@ -73,12 +74,13 @@ function OrderBook() {
           orders={ data.bids }
         />
       </div>
-
-      <button onClick={ () => {
-        setProduct((prevProduct: string) => prevProduct === 'XBT' ? 'ETH' : 'XBT');
-      } }>
-        Switch
-      </button>
+      <div className="ob-footer">
+        <Button onClick={ () => {
+          setProduct((prevProduct: string) => prevProduct === 'XBT' ? 'ETH' : 'XBT');
+        } }>
+          Toggle Feed
+        </Button>
+      </div>
     </section>
   );
 }
