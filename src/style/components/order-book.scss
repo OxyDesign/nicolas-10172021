@@ -5,6 +5,28 @@
   display: flex;
   flex-direction: column;
   background-color: $background-color;
+  color: $primary-text-color;
+
+  .number {
+    font-family: 'Roboto Mono';
+  }
+
+  .ob-title-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .ob-title,
+  .ob-spread {
+    display: flex;
+    padding: 10px 10px;
+  }
+
+  .ob-spread {
+    justify-content: center;
+    flex-grow: 1;
+    color: $secondary-text-color;
+  }
 
   .ob-tables-container {
     display: flex;
@@ -19,6 +41,11 @@
       display: flex;
       width: 100%;
       flex-direction: column;
+    }
+
+    thead {
+      border-top: 1px solid $dark-gray;
+      border-bottom: 1px solid $dark-gray;
     }
 
     tr {
@@ -37,11 +64,14 @@
     }
 
     td, th {
-      color: $primary-text-color;
       display: flex;
-      padding: 5px 10px;
+      padding: 5px 3vw 5px 5px;
       width: 33.3333%;
-      justify-content: left;
+      justify-content: right;
+    }
+
+    th {
+      color: $secondary-text-color;
     }
 
     &.ask {
@@ -61,6 +91,12 @@
 // Mobile
 @include mobile {
   .ob {
+    .ob-title-container {
+      .ob-spread {
+        display: none;
+      }
+    }
+
     .ob-tables-container {
       flex-direction: column;
     }
@@ -79,6 +115,10 @@
       }
 
       &.bid {
+        thead {
+          display: none;
+        }
+
         tbody tr {
           background-image: linear-gradient(to left, $bid-bg-color, $bid-bg-color);
           background-position: 0 0;
@@ -93,6 +133,10 @@
   .ob {
     .ob-tables-container {
       flex-direction: row;
+
+      .ob-spread {
+        display: none;
+      }
     }
 
     .orders-table {
