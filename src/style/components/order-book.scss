@@ -167,7 +167,19 @@
     }
 
     .orders-table {
+      $theadHeight: 28px;
+
       width: 50%;
+
+      thead {
+        position: fixed;
+        width: inherit;
+        background: $background-color;
+      }
+
+      tbody {
+        padding-top: $theadHeight;
+      }
 
       &.ask {
         td, th {
