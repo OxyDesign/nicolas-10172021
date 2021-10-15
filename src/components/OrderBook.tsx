@@ -11,12 +11,34 @@ import Button from './Button';
 import OrderBookWebSocket from '../data/OrderBookWebSocket';
 
 function OrderBook() {
+  const frequency: number = 1000;
   const [ws, setWs]: [any, Function] = useState(null);
   const [isLoading, setIsLoading]: [boolean, Function] = useState(true);
+  const [isPaused, setIsPaused]: [boolean, Function] = useState(false);
   const [product, setProduct]: [string, Function] = useState('');
   const [data, setData]: [{asks: TotalOrders, bids: TotalOrders}, Function] = useState({asks: [], bids: []});
   const spread: number = (data.asks.length && data.bids.length) ? Math.abs(data.asks[0][0] - data.bids[0][0]) : 0;
   const spreadPercentage: number = spread > 0 ? (spread * 100 / data.asks[0][0]) : 0;
+  const loadingMessage = isPaused ? 'Paused' : 'Loading...';
+
+  const subscribe = (websocket: OrderBookWebSocket, loadingFunction: Function) => {
+    setTimeout(() => loadingFunction(false), 200);
+    websocket.subscribe({
+      product,
+      frequency,
+      onData: ({ asks, bids }: {asks: [], bids: []}): void => {
+        setData({
+          asks: computeOrdersTotal(asks),
+          bids: computeOrdersTotal(bids.reverse())
+        });
+      }
+    });
+  };
+
+  const unsubscribe = (websocket: OrderBookWebSocket, loadingFunction: Function) => {
+    loadingFunction(true);
+    websocket.unsubscribe({ product });
+  };
 
   useEffect(() => {
     const newWebsocket = new OrderBookWebSocket({
@@ -27,7 +49,15 @@ function OrderBook() {
 
     setWs(newWebsocket);
 
+    const onFocus = () => subscribe(newWebsocket, setIsPaused);
+    const onBlur = () => unsubscribe(newWebsocket, setIsPaused);
+
+    window.addEventListener('focus', onFocus);
+    window.addEventListener('blur', onBlur);
+
     return () => {
+      window.removeEventListener('focus', onFocus);
+      window.removeEventListener('blur', onBlur);
       newWebsocket.close();
     };
   }, []);
@@ -35,22 +65,10 @@ function OrderBook() {
   useEffect(() => {
     if (!product || !ws) return;
 
-    setTimeout(() => setIsLoading(false), 200);
-
-    ws.subscribe({
-      product,
-      frequency: 1000,
-      onData: ({ asks, bids }: {asks: [], bids: []}): void => {
-        setData({
-          asks: computeOrdersTotal(asks),
-          bids: computeOrdersTotal(bids.reverse())
-        });
-      }
-    })
+    subscribe(ws, setIsLoading);
 
     return () => {
-      setIsLoading(true);
-      ws.unsubscribe({ product });
+      unsubscribe(ws, setIsLoading);
     };
   }, [product, ws]);
 
@@ -85,8 +103,8 @@ function OrderBook() {
           Toggle Feed
         </Button>
       </div>
-      <div className={ `ob-loader ${ isLoading ? 'visible' : '' }` }>
-        Loading...
+      <div className={ `ob-loader ${ (isLoading || isPaused) ? 'visible' : '' }` }>
+        { loadingMessage }
       </div>
     </section>
   );
