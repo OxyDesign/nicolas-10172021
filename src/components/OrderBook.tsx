@@ -12,6 +12,7 @@ import OrderBookWebSocket from '../data/OrderBookWebSocket';
 
 function OrderBook() {
   const [ws, setWs]: [any, Function] = useState(null);
+  const [isLoading, setIsLoading]: [boolean, Function] = useState(true);
   const [product, setProduct]: [string, Function] = useState('');
   const [data, setData]: [{asks: TotalOrders, bids: TotalOrders}, Function] = useState({asks: [], bids: []});
   const spread: number = (data.asks.length && data.bids.length) ? Math.abs(data.asks[0][0] - data.bids[0][0]) : 0;
@@ -34,6 +35,8 @@ function OrderBook() {
   useEffect(() => {
     if (!product || !ws) return;
 
+    setTimeout(() => setIsLoading(false), 200);
+
     ws.subscribe({
       product,
       frequency: 1000,
@@ -46,6 +49,7 @@ function OrderBook() {
     })
 
     return () => {
+      setIsLoading(true);
       ws.unsubscribe({ product });
     };
   }, [product, ws]);
@@ -80,6 +84,9 @@ function OrderBook() {
         } }>
           Toggle Feed
         </Button>
+      </div>
+      <div className={ `ob-loader ${ isLoading ? 'visible' : '' }` }>
+        Loading...
       </div>
     </section>
   );

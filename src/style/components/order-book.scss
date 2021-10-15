@@ -18,11 +18,35 @@
   $totalHeight: $theadHeight + $titleHeight;
   $halfTotalHeight: $totalHeight / 2;
 
+  position: relative;
   display: flex;
   flex-direction: column;
   background-color: $background-color;
   color: $primary-text-color;
   height: 100%;
+
+  .ob-loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: transparent;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-property: all 0.1s ease-in;
+    pointer-events: none;
+    opacity: 0;
+
+    &.visible {
+      color: $primary-text-color;
+      background-color: fade-out($dark-gray, 0.1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
 
   .number {
     font-family: 'Roboto Mono';
