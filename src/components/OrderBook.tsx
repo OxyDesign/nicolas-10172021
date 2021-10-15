@@ -39,8 +39,8 @@ function OrderBook() {
       frequency: 1000,
       onData: ({ asks, bids }: {asks: [], bids: []}): void => {
         setData({
-          asks: computeOrdersTotal(asks.reverse()),
-          bids: computeOrdersTotal(bids)
+          asks: computeOrdersTotal(asks),
+          bids: computeOrdersTotal(bids.reverse())
         });
       }
     })

@@ -2,6 +2,22 @@
 @import '../mixins/mediaqueries';
 
 .ob {
+  $titleFontSize: 16px;
+  $titleLineHeight: $titleFontSize;
+  $titlePadding: 10px;
+
+  $titleHeight: $titleLineHeight + $titlePadding * 2;
+
+  $cellFontSize: 14px;
+  $cellLineHeight: $cellFontSize;
+  $cellVerticalPadding: 5px;
+  $theadBorderWidth: 1px;
+
+  $theadHeight: $cellLineHeight + ($cellVerticalPadding + $theadBorderWidth )* 2;
+
+  $totalHeight: $theadHeight + $titleHeight;
+  $halfTotalHeight: $totalHeight / 2;
+
   display: flex;
   flex-direction: column;
   background-color: $background-color;
@@ -20,7 +36,9 @@
   .ob-title,
   .ob-spread {
     display: flex;
-    padding: 10px 10px;
+    font-size: $titleFontSize;
+    line-height: $titleLineHeight;
+    padding: $titlePadding;
   }
 
   .ob-spread {
@@ -45,8 +63,8 @@
     }
 
     thead {
-      border-top: 1px solid $dark-gray;
-      border-bottom: 1px solid $dark-gray;
+      border-top: $theadBorderWidth solid $dark-gray;
+      border-bottom: $theadBorderWidth solid $dark-gray;
     }
 
     tr {
@@ -66,13 +84,16 @@
 
     td, th {
       display: flex;
-      padding: 5px 3vw 5px 5px;
+      padding: $cellVerticalPadding 3vw $cellVerticalPadding 0;
       width: 33.3333%;
       justify-content: right;
+      font-size: $cellFontSize;
+      line-height: $cellLineHeight;
     }
 
     th {
       color: $secondary-text-color;
+      text-transform: uppercase;
     }
 
     &.ask {
@@ -94,11 +115,9 @@
     justify-content: center;
     padding: 20px;
   }
-}
 
-// Mobile
-@include mobile {
-  .ob {
+  // Mobile
+  @include mobile {
     .ob-title-container {
       .ob-spread {
         display: none;
@@ -112,11 +131,6 @@
     }
 
     .orders-table {
-      $theadHeight: 28px;
-      $spreadHeight: 36px;
-      $totalHeight: $theadHeight + $spreadHeight;
-      $halfHeight: $totalHeight / 2;
-
       width: 100%;
       overflow: hidden;
 
@@ -125,7 +139,7 @@
       }
 
       &.ask {
-        height: calc(50% - #{ $halfHeight } + #{ $theadHeight });
+        height: calc(50% - #{ $halfTotalHeight } + #{ $theadHeight });
 
         tbody {
           flex-direction: column-reverse;
@@ -138,7 +152,7 @@
       }
 
       &.bid {
-        height: calc(50% - #{ $halfHeight });
+        height: calc(50% - #{ $halfTotalHeight });
 
         thead {
           display: none;
@@ -151,11 +165,9 @@
       }
     }
   }
-}
 
-// Desktop
-@include desktop {
-  .ob {
+  // Desktop
+  @include desktop {
     .ob-tables-container {
       flex-direction: row;
       flex-grow: 1;
@@ -167,8 +179,6 @@
     }
 
     .orders-table {
-      $theadHeight: 28px;
-
       width: 50%;
 
       thead {
@@ -182,6 +192,17 @@
       }
 
       &.ask {
+        order: 2;
+
+        tbody tr {
+          background-image: linear-gradient(to left, $ask-bg-color, $ask-bg-color);
+          background-position: 0 0;
+        }
+      }
+
+      &.bid {
+        order: 1;
+
         td, th {
           &:nth-child(1) {
             order: 3;
@@ -195,15 +216,8 @@
         }
 
         tbody tr {
-          background-image: linear-gradient(to left, $ask-bg-color, $ask-bg-color);
-          background-position: 100% 0;
-        }
-      }
-
-      &.bid {
-        tbody tr {
           background-image: linear-gradient(to left, $bid-bg-color, $bid-bg-color);
-          background-position: 0 0;
+          background-position: 100% 0;
         }
       }
     }
