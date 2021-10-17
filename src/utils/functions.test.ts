@@ -5,7 +5,7 @@ import {
   getSubscriptionMessage,
   sortOrdersByAsc,
   updateOrders
-} from './utils/functions';
+} from './functions';
 // import App from './App';
 
 // test('renders learn react link', () => {
