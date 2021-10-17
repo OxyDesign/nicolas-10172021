@@ -11,7 +11,7 @@ import Button from './Button';
 import OrderBookWebSocket from '../data/OrderBookWebSocket';
 
 function OrderBook() {
-  const frequency: number = 1000;
+  const frequency: number = 500;
   const [ws, setWs]: [any, Function] = useState(null);
   const [isLoading, setIsLoading]: [boolean, Function] = useState(true);
   const [isPaused, setIsPaused]: [boolean, Function] = useState(false);
@@ -101,10 +101,8 @@ function OrderBook() {
       </div>
       <div className={ `ob-loader ${ (isLoading || isPaused) ? 'visible' : '' }` }>
         <span>{ loadingMessage }</span>
-        { isPaused && <Button onClick={ () => {
-            subscribe(ws, setIsPaused);
-          } }>
-            Reconnect
+        { isPaused && <Button onClick={ () => subscribe(ws, setIsPaused) }>
+          Reconnect
         </Button> }
       </div>
     </section>
