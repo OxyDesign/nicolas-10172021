@@ -112,6 +112,7 @@
       width: 100%;
       flex-direction: row;
       flex-shrink: 0;
+      transition: background-size 0.1s ease-in;
     }
 
     tbody tr {
