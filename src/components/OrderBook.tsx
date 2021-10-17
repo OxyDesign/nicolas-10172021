@@ -49,14 +49,10 @@ function OrderBook() {
 
     setWs(newWebsocket);
 
-    const onFocus = () => subscribe(newWebsocket, setIsPaused);
     const onBlur = () => unsubscribe(newWebsocket, setIsPaused);
-
-    window.addEventListener('focus', onFocus);
     window.addEventListener('blur', onBlur);
 
     return () => {
-      window.removeEventListener('focus', onFocus);
       window.removeEventListener('blur', onBlur);
       newWebsocket.close();
     };
@@ -104,7 +100,12 @@ function OrderBook() {
         </Button>
       </div>
       <div className={ `ob-loader ${ (isLoading || isPaused) ? 'visible' : '' }` }>
-        { loadingMessage }
+        <span>{ loadingMessage }</span>
+        { isPaused && <Button onClick={ () => {
+            subscribe(ws, setIsPaused);
+          } }>
+            Reconnect
+        </Button> }
       </div>
     </section>
   );

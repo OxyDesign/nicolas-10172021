@@ -34,11 +34,16 @@
     color: transparent;
     background-color: transparent;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     transition-property: all 0.1s ease-in;
     pointer-events: none;
     opacity: 0;
+
+    > * + * {
+      margin-top: 10px;
+    }
 
     &.visible {
       color: $primary-text-color;
