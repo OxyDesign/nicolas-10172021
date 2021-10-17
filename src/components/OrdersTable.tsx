@@ -6,6 +6,7 @@ type OrdersTableProps = {
 };
 
 function OrdersTable({ type, orders }: OrdersTableProps) {
+  // Get max to pass to the rows to compute background size %
   const max = orders.length ? orders[orders.length - 1][2] : 0;
 
   return <table
