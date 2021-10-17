@@ -13,7 +13,7 @@ function OrderRow({ order, max }: OrderRowProps) {
 
   // Use the formatting util to display each number as expected
   return <tr style={ {
-    backgroundSize: `${ totalPercentage }%`
+    backgroundSize: `${ totalPercentage }% 100%`
   } }>
     <td className="price">{ formatNumberForDisplay(price, 2) }</td>
     <td>{ formatNumberForDisplay(size) }</td>

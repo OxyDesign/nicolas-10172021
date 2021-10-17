@@ -1,11 +1,13 @@
 @import '../vars/colors';
 
 .primary-button {
+  font-size: 12px;
+  line-height: 12px;
   background-color: $bt-bg-color;
   color: $bt-text-color;
   border: 0;
   border-radius: 4px;
-  padding: 10px 20px;
+  padding: 8px 15px;
   cursor: pointer;
   transition: background-color 0.05s ease-in;
 
