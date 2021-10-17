@@ -2,6 +2,7 @@
 @import '../mixins/mediaqueries';
 
 .ob {
+  // Local Variables
   $titleFontSize: 16px;
   $titleLineHeight: $titleFontSize;
   $titlePadding: 10px;
@@ -25,6 +26,7 @@
   color: $primary-text-color;
   height: 100%;
 
+  // Over Layer for Loading / Pause
   .ob-loader {
     position: absolute;
     top: 0;
@@ -57,6 +59,9 @@
     font-family: 'Roboto Mono';
   }
 
+  // Default / Common styles
+
+  // Title and Spread
   .ob-title-container {
     display: flex;
     flex-direction: row;
@@ -80,6 +85,7 @@
     display: flex;
   }
 
+  // Order Tables
   .orders-table {
     display: flex;
     flex-direction: column;
@@ -91,11 +97,13 @@
       flex-direction: column;
     }
 
+    // Table Head
     thead {
       border-top: $theadBorderWidth solid $dark-gray;
       border-bottom: $theadBorderWidth solid $dark-gray;
     }
 
+    // Table Row
     tr {
       display: flex;
       width: 100%;
@@ -111,6 +119,7 @@
       }
     }
 
+    // Table Cell
     td, th {
       display: flex;
       padding: $cellVerticalPadding 3vw $cellVerticalPadding 0;
@@ -125,12 +134,14 @@
       text-transform: uppercase;
     }
 
+    // Apply Red on Ask prices
     &.ask {
       .price {
         color: $ask-text-color;
       }
     }
 
+    // Apply Green on Bid prices
     &.bid {
       .price {
         color: $bid-text-color;
@@ -138,6 +149,7 @@
     }
   }
 
+  // Order Book Footer
   .ob-footer {
     display: flex;
     flex-direction: row;
@@ -145,7 +157,7 @@
     padding: 20px;
   }
 
-  // Mobile
+  // Mobile Specific Styles
   @include mobile {
     .ob-title-container {
       .ob-spread {
@@ -153,12 +165,14 @@
       }
     }
 
+    // Tables Positioned Top / Bottom
     .ob-tables-container {
       flex-direction: column;
       flex-grow: 1;
       overflow: hidden;
     }
 
+    // Full Width Tables
     .orders-table {
       width: 100%;
       overflow: hidden;
@@ -167,26 +181,32 @@
         overflow: auto;
       }
 
+      // Ask Orders are using 50% of available height once other elements subtracted
       &.ask {
         height: calc(50% - #{ $halfTotalHeight } + #{ $theadHeight });
 
+        // Ask order is reversed
         tbody {
           flex-direction: column-reverse;
         }
 
+        // Ask Background set to Red, & spreads from left to right
         tbody tr {
           background-image: linear-gradient(to left, $ask-bg-color, $ask-bg-color);
           background-position: 0 0;
         }
       }
 
+      // Bid Orders are using 50% of available height once other elements subtracted
       &.bid {
         height: calc(50% - #{ $halfTotalHeight });
 
+        // Hide the thead to only keep one (from Ask Table)
         thead {
           display: none;
         }
 
+        // Bid Background set to Green, & spreads from left to right
         tbody tr {
           background-image: linear-gradient(to left, $bid-bg-color, $bid-bg-color);
           background-position: 0 0;
@@ -195,8 +215,9 @@
     }
   }
 
-  // Desktop
+  // Desktop Specific Styles
   @include desktop {
+    // Tables Positioned Left / Right
     .ob-tables-container {
       flex-direction: row;
       flex-grow: 1;
@@ -207,31 +228,38 @@
       }
     }
 
+    // Half Width Tables
     .orders-table {
       width: 50%;
 
+      // Headers stay in the same position, regardless of scroll
       thead {
         position: fixed;
         width: inherit;
         background: $background-color;
       }
 
+      // Add space for fixed thead to go over
       tbody {
         padding-top: $theadHeight;
       }
 
+      // Reorder. Ask Table comes second
       &.ask {
         order: 2;
 
+        // Ask Background set to Red, & spreads from left to right
         tbody tr {
           background-image: linear-gradient(to left, $ask-bg-color, $ask-bg-color);
           background-position: 0 0;
         }
       }
 
+      // Reorder. Bid Table comes first
       &.bid {
         order: 1;
 
+        // Columns (Price, Size, Total) are reversed for Bid
         td, th {
           &:nth-child(1) {
             order: 3;
@@ -244,6 +272,7 @@
           }
         }
 
+        // Bid Background set to Green, & spreads from right to left
         tbody tr {
           background-image: linear-gradient(to left, $bid-bg-color, $bid-bg-color);
           background-position: 100% 0;
