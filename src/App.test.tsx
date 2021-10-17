@@ -72,7 +72,7 @@ test('Renders Asks OrdersTable UI', () => {
     // Check if Total is correct
     expect(cellTotal.textContent).toBe(formatNumberForDisplay(total));
     // Check if Background percentage correct
-    expect(row).toHaveStyle(`backgroundSize: ${ percentage }%`);
+    expect(row).toHaveStyle(`backgroundSize: ${ percentage }% 100%`);
   });
 });
 
@@ -97,6 +97,6 @@ test('Renders Bids OrdersTable UI', () => {
     // Check if Total is correct
     expect(cellTotal.textContent).toBe(formatNumberForDisplay(total));
     // Check if Background percentage correct
-    expect(row).toHaveStyle(`backgroundSize: ${ percentage }%`);
+    expect(row).toHaveStyle(`backgroundSize: ${ percentage }% 100%`);
   });
 });
