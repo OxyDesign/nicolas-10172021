@@ -2,14 +2,14 @@
 
 // Mobile
 @mixin mobile {
-  @media (max-width: #{$screen-mobile-max}) {
+  @media ($mobileMediaquery) {
     @content;
   }
 }
 
 // Desktop
 @mixin desktop {
-  @media (min-width: #{$screen-desktop-min}) {
+  @media ($desktopMediaquery) {
     @content;
   }
 }

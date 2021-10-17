@@ -2,3 +2,11 @@ $breakpoint: 660;
 
 $screen-desktop-min: #{$breakpoint}px;
 $screen-mobile-max: #{$breakpoint - 1}px;
+
+// Mobile / Desktop
+$mobileMediaquery: 'max-width: #{$screen-mobile-max}';
+$desktopMediaquery: 'min-width: #{$screen-desktop-min}';
+
+// Portrait / Landscape
+// $mobileMediaquery: 'orientation: portrait';
+// $desktopMediaquery: 'orientation: landscape';
