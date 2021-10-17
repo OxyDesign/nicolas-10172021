@@ -1,4 +1,3 @@
-// import { render, screen } from '@testing-library/react';
 import {
   computeOrdersTotal,
   formatNumberForDisplay,
@@ -6,13 +5,6 @@ import {
   sortOrdersByAsc,
   updateOrders
 } from './functions';
-// import App from './App';
-
-// test('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/learn react/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
 
 const getSubscriptionMessageTests = [
   // Subscribe / XBT
